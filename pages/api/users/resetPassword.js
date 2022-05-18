@@ -28,9 +28,9 @@ export default async function handler(req, res) {
         });
   
         const client = new SMTPClient({
-          user: "mailer@linkpoint.ca",
-          password: "LPT17@bo#ru%",
-          host: "webmail.linkpoint.ca",
+          user: process.env.SMTPUSER,
+          password: process.env.SMTPPASSWORD,
+          host: process.env.SMTPHOST,
           port: 587,
           tls: true,
         });
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         await client.sendAsync(
           {
             text: req.headers.referer + "?token=" + userToken.token,
-            from: "mailer@linkpoint.ca",
+            from: process.env.SMTPUSER,
             to: email,
             subject: "Reset Password",
           }
