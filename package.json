@@ -1,0 +1,31 @@
+{
+  "name": "next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ckeditor-linkpoint/ckeditor5-build-classic": "^18.0.0",
+    "@prisma/client": "^3.11.1",
+    "bcryptjs": "^2.4.3",
+    "child_process": "^1.0.2",
+    "cors": "^2.8.5",
+    "emailjs": "^3.7.0",
+    "formidable": "^2.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "next": "^12.1.5",
+    "pg-promise": "^10.11.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "sharp": "^0.30.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-next": "^11.1.0",
+    "prisma": "^3.11.1"
+  }
+}

@@ -1,0 +1,125 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button:not([disabled]){
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  margin: 2px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #FFFFFF;
+  background-clip: padding-box;
+  border: 1px solid #CCCCCC;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
+}
+
+button:disabled{
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  margin: 2px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #FFFFFF;
+  background-clip: padding-box;
+  border: 1px solid #CCCCCC;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+input:not([type='checkbox']) {
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #FFFFFF;
+  background-clip: padding-box;
+  border: 1px solid #CCCCCC;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  width: 100%;
+}
+
+input[type="file"] {
+  width: 100%;
+}
+
+select{
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #FFFFFF;
+  background-clip: padding-box;
+  border: 1px solid #CCCCCC;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
+}
+
+button:hover:not([disabled]){
+  border: 1px solid #66AAEE;
+}
+
+body select:hover{
+  border: 1px solid #66AAEE;
+}
+
+input:hover{
+  border: 1px solid #66AAEE;
+}
+
+textarea {
+  height: calc(3em + 1.5rem + 4px);
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #FFFFFF;
+  background-clip: padding-box;
+  border: 1px solid #CCCCCC;
+  border-radius: .25rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+th {
+  text-align: left;
+  font-size: larger;
+  height: 50px;
+}
+
+td {
+  height: 40px;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+}
+
+h2 {
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
+}

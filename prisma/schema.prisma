@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://postgres:L1nkP01nt@localhost:5432/prisma"
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique @db.VarChar(255)
+  name      String  @db.VarChar(255)
+  password  String? @db.VarChar(255)
+  isAdmin   Boolean @default(false)
+  roles     Role[]
+  photo     String?
+  pushToken String?
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String       @db.VarChar(255)
+  users       User[]
+  permissions Permission[]
+}
+
+model Permission {
+  id     Int     @id @default(autoincrement())
+  model  String  @db.VarChar(255)
+  method String  @db.VarChar(255)
+  roles  Role[]
+  
+  @@unique([model, method])
+}
+
+model UserToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  userId    Int
+}
+
+model JsonSchema {
+  id        Int        @id @default(autoincrement())
+  name      String     @db.VarChar(255)
+  json      String
+  jsonDatas JsonData[]
+}
+
+model JsonData {
+  id           Int        @id @default(autoincrement())
+  name         String?    @db.VarChar(255)
+  json         String
+  jsonSchemaId Int
+  jsonSchema   JsonSchema @relation(fields: [jsonSchemaId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id        Int    @id @default(autoincrement())
+  name      String @db.VarChar(255)
+  type      String @db.VarChar(255)
+  image     String?
+  htmlPages HtmlPage[]
+}
+
+model HtmlPage {
+  id         Int     @id @default(autoincrement())
+  title      String  @db.VarChar(255)
+  image      String?
+  content    String?
+  uri        String?
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
