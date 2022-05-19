@@ -50,5 +50,5 @@ jobs:
         run: npm run build
 
       - name: Deploy
-        run: curl -s http://xiny.ca:8080/
+        run: curl -s http://xiny.ca/api/deploy
 
