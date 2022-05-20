@@ -1,0 +1,54 @@
+name: ESLint
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ master ]
+  schedule:
+    - cron: '21 4 * * 3'
+
+jobs:
+  eslint:
+    name: Run eslint scanning
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: L1nkP01nt
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+          
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install
+        run: npm install
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Migrate
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
+        run: curl -s http://xiny.ca:8080
+
