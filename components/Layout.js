@@ -90,11 +90,11 @@ export default function Layout(props) {
                 {jsonDataPermission && <span className={router.pathname==="/jsonDatas" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/jsonDatas">Datas</Link></span>}
                 {jsonSchemaPermission && <span className={router.pathname==="/jsonSchemas" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/jsonSchemas">Schemas</Link></span>}
                 {htmlPagePermission && <span className={router.pathname==="/htmlPages" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/htmlPages">Pages</Link></span>}
+                {feelingPermission && <span className={router.pathname==="/feelings" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/feelings">Feelings</Link></span>}
                 {userPermission && <span className={router.pathname==="/users" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/users">Users</Link></span>}
                 {rolePermission && <span className={router.pathname==="/roles" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/roles">Roles</Link></span>}
                 {permissionPermission && <span className={router.pathname==="/permissions" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/permissions">Permissions</Link></span>}
                 {categoryPermission && <span className={router.pathname==="/categories" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/categories">Categories</Link></span>}
-                {feelingPermission && <span className={router.pathname==="/feelings" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/feelings">Feelings</Link></span>}
                 </>
                 }
                 {!showMenu &&
@@ -104,10 +104,10 @@ export default function Layout(props) {
                         <option value="/">Home</option>
                     }
                     <option value="/dashboard">Dashboard</option>
-                    <option value="/jsonDatas">Datas</option>
                     {jsonDataPermission && <option value="/jsonDatas">Datas</option>}
                     {jsonSchemaPermission && <option value="/jsonSchemas">Schemas</option>}
                     {htmlPagePermission && <option value="/htmlPages">Pages</option>}
+                    {feelingPermission && <option value="/feelings">Feelings</option>}
                     {userPermission && <option value="/users">Users</option>}
                     {rolePermission && <option value="/roles">Roles</option>}
                     {permissionPermission && <option value="/permissions">Permissions</option>}
