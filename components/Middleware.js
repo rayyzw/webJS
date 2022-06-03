@@ -45,6 +45,9 @@ export async function checkPermission(token, model, method) {
                     permissions: true,
                   },
                 });
+                console.log(role.permissions);
+                console.log(model);
+                console.log(method);
                 if(role.permissions.some((p)=>(p.model===model && p.method===method))){
                   hasPermission = true;
                 }

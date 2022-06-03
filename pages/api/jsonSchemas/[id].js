@@ -19,11 +19,11 @@ export default async function handler(req, res) {
   }
   else if(req.method === 'PUT'){
     let { id } = req.query;
-    let role = await prismaClient.jsonSchema.update({
+    let jsonSchema = await prismaClient.jsonSchema.update({
       where: { id: parseInt(id) },
       data: req.body
     });
-    res.status(200).send(role);
+    res.status(200).send(jsonSchema);
   }
   else if(req.method === 'PATCH'){
     res.status(400).send({ error: 'PATCH requests not allowed!' });

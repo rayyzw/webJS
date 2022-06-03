@@ -1,31 +1,31 @@
-import { checkPermission } from '/components/Middleware';
+import { checkPermission, enableCors } from '/components/Middleware';
 import prismaClient from '/components/PrismaClient';
 
 export default async function handler(req, res) {
-  if(req.method!=="GET"){
-    let hasPermission = await checkPermission(req.headers.token,"Category",req.method);
-    if(!hasPermission){
-      res.status(403).send({ error: 'No permission!' });
-      return;
-    }
+  await enableCors(req, res);
+  
+  let hasPermission = await checkPermission(req.headers.token,"Feeling",req.method);
+  if(!hasPermission){
+    res.status(403).send({ error: 'No permission!' });
+    return;
   }
   
   if(req.method === 'GET'){
     let { id } = req.query;
-    let category = await prismaClient.category.findFirst({
+    let feeling = await prismaClient.feeling.findFirst({
       where: {
         id: parseInt(id),
       }
     });
-    res.status(200).send(category);
+    res.status(200).send(feeling);
   }
   else if(req.method === 'PUT'){
     let { id } = req.query;
-    let category = await prismaClient.category.update({
+    let feeling = await prismaClient.feeling.update({
       where: { id: parseInt(id) },
       data: req.body
     });
-    res.status(200).send(category);
+    res.status(200).send(feeling);
   }
   else if(req.method === 'PATCH'){
     res.status(400).send({ error: 'PATCH requests not allowed!' });
@@ -35,7 +35,7 @@ export default async function handler(req, res) {
   }
   else if(req.method === 'DELETE'){
     let { id } = req.query;
-    await prismaClient.category.delete({
+    await prismaClient.feeling.delete({
       where: {
         id: parseInt(id),
       }

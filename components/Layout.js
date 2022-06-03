@@ -15,6 +15,7 @@ export default function Layout(props) {
     const [jsonDataPermission, setJsonDataPermission] = React.useState(false);
     const [htmlPagePermission, setHtmlPagePermission] = React.useState(false);
     const [categoryPermission, setCategoryPermission] = React.useState(false);
+    const [feelingPermission, setFeelingPermission] = React.useState(false);
     const [anchor, setAnchor] = React.useState();
     const [showMenu, setShowMenu] = React.useState(window.innerWidth>1000);
     const [showLogo, setShowLogo] = React.useState(window.innerWidth>500);
@@ -35,6 +36,7 @@ export default function Layout(props) {
             setJsonDataPermission(true);
             setHtmlPagePermission(true);
             setCategoryPermission(true);
+            setFeelingPermission(true);
         }
         else if(appContext.user && appContext.user.roles){
             appContext.user.roles.map((r)=>{
@@ -58,6 +60,9 @@ export default function Layout(props) {
                 }
                 if(r.permissions.some((p)=>(p.model==="Category" && p.method==="GET"))){
                     setCategoryPermission(true);
+                }
+                if(r.permissions.some((p)=>(p.model==="Feeling" && p.method==="GET"))){
+                    setFeelingPermission(true);
                 }
             });
         }
@@ -89,6 +94,7 @@ export default function Layout(props) {
                 {rolePermission && <span className={router.pathname==="/roles" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/roles">Roles</Link></span>}
                 {permissionPermission && <span className={router.pathname==="/permissions" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/permissions">Permissions</Link></span>}
                 {categoryPermission && <span className={router.pathname==="/categories" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/categories">Categories</Link></span>}
+                {feelingPermission && <span className={router.pathname==="/feelings" ? appContext.styles.navMenuActive : appContext.styles.navMenu}><Link href="/feelings">Feelings</Link></span>}
                 </>
                 }
                 {!showMenu &&
@@ -159,8 +165,8 @@ export default function Layout(props) {
                 </div>
             }
             <div className={appContext.styles.bottomContainer}>
-              <Link href="https://linkpoint.ca" target="_blank" rel="noreferrer">
-                  2022 &copy; LinkPoint.
+              <Link href="https://xiny.ca" target="_blank" rel="noreferrer">
+                  2022 &copy; XinY.
               </Link>
             </div>
         </div>

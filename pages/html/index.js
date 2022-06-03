@@ -116,8 +116,8 @@ export default function HtmlPages(props) {
               </div>
           }
           <div className={appContext.styles.bottomContainer}>
-            <Link href="https://linkpoint.ca" target="_blank" rel="noreferrer">
-                2022 &copy; LinkPoint.
+            <Link href="https://xiny.ca" target="_blank" rel="noreferrer">
+                2022 &copy; XinY.
             </Link>
           </div>
       </div>

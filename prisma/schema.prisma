@@ -76,3 +76,15 @@ model HtmlPage {
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }
+
+model Feeling {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  userId      Int
+  purpose     Int
+  thinking    Int
+  energy      Int
+  environment Int
+  physical    Int
+  moving      Int
+}

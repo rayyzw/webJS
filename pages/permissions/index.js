@@ -7,7 +7,7 @@ export default function Permissions(props) {
   const appContext = useAppContext();
   const [permissions, setPermissions] = React.useState();
   const [permission, setPermission] = React.useState({});
-  const models = ["User","Role","Permission","JsonSchema","JsonData","HtmlPage","Category"];
+  const models = ["User","Role","Permission","JsonSchema","JsonData","HtmlPage","Category","Feeling"];
   const methods = ["GET","PUT","PATCH","POST","DELETE"];
   
   React.useEffect(() => {

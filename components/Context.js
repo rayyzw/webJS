@@ -2,8 +2,8 @@ import React from 'react';
 import Fetcher from '/components/Fetcher';
 import lightStyles from '/styles/Light.module.css';
 import darkStyles from '/styles/Dark.module.css';
-import canadaStyles from '/styles/Warm.module.css';
-import electricStyles from '/styles/Traditional.module.css';
+import warmStyles from '/styles/Warm.module.css';
+import traditionalStyles from '/styles/Traditional.module.css';
 
 const AppContext = React.createContext();
 
@@ -39,10 +39,10 @@ export function AppWrapper({ children }) {
         setStyles(lightStyles);
       }
       else if(localStorage.getItem("theme")==="Warm"){
-        setStyles(canadaStyles);
+        setStyles(warmStyles);
       }
       else if(localStorage.getItem("theme")==="Traditional"){
-        setStyles(electricStyles);
+        setStyles(traditionalStyles);
       }
       else{
         setStyles(lightStyles);
