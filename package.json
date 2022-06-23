@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky install",
+    "test": "next lint"
   },
   "dependencies": {
     "@ckeditor-linkpoint/ckeditor5-build-classic": "^18.0.0",
@@ -26,6 +28,7 @@
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-next": "^11.1.0",
+    "husky": "^8.0.1",
     "prisma": "^3.11.1"
   }
 }
