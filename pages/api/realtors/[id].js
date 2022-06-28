@@ -1,3 +1,5 @@
+const puppeteer = require('puppeteer');
+
 export default async function handler(req, res) {
   if(req.method === 'GET'){
     let { id } = req.query;
