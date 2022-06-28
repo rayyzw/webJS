@@ -1,10 +1,35 @@
-const puppeteer = require('puppeteer');
+import { createClient } from 'redis';
+import puppeteer from 'puppeteer';
 
 export default async function handler(req, res) {
   if(req.method === 'GET'){
     let { id } = req.query;
-    let realtors = await getRealtors(id);
-    res.status(200).send(realtors);
+    if(id){
+      try{
+        const client = createClient({
+            url: 'redis://default:Nu5tream@127.0.0.1:6379'
+        });
+        client.on('error', (err) => console.log('Redis Client Error', err));
+        await client.connect();
+        let hasData = await client.exists(`Brokerage${id}`);
+        let realtors = {};
+        if(hasData){
+          realtors = await client.get(`Brokerage${id}`);
+        }
+        else{
+          realtors = await getRealtors(id);
+          await client.set(`Brokerage${id}`, JSON.stringify(realtors));
+        }
+        res.status(200).send(realtors);
+      }
+      catch(ex){
+        console.log(ex);
+        res.status(400).send({ error: 'Brokerage ID incorrect!' });
+      }
+    }
+    else{
+      res.status(400).send({ error: 'Brokerage ID not found!' });
+    }
   }
   else if(req.method === 'PUT'){
     res.status(400).send({ error: 'PUT requests not allowed!' });
@@ -29,7 +54,7 @@ const getRealtors = async (id) => {
   while(hasMore){
     pageNumber++;
     const url = `https://online.bcfsa.ca/search-results?WCE=C=20|P=up_dirMyEmployees_brn|K=Delears~${id}&page=${pageNumber}`;
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium-browser'});
     const page = await browser.newPage();
     await page.goto(url, {
       waitUntil: 'networkidle2',
@@ -72,7 +97,7 @@ const getRealtors = async (id) => {
     });
 
     for(let i=0;i<hrefs.length;i++){
-      const browser1 = await puppeteer.launch();
+      const browser1 = await puppeteer.launch({executablePath: '/usr/bin/chromium-browser'});
       const page1 = await browser1.newPage();
       await page1.goto(url, {
         waitUntil: 'networkidle2',
