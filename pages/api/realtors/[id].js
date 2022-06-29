@@ -56,77 +56,84 @@ const getRealtors = async (id) => {
     console.log(`page ${pageNumber}`); 
     const url = `https://online.bcfsa.ca/search-results?WCE=C=20|P=up_dirMyEmployees_brn|K=Delears~${id}&page=${pageNumber}`;
     const browser = await puppeteer.launch(process.platform==='linux'?{executablePath: '/usr/bin/chromium-browser'}:undefined);
-    const page = await browser.newPage();
-    await page.goto(url, {
-      waitUntil: 'networkidle2',
-      timeout: 0
-    });
-    
-    await page.waitForSelector('table[class="dataTable"]');  
-
-    const footer = await page.evaluate(() => {
-      debugger;
-      return document.querySelector(
-        'tr[class="webgrid-footer"]'
-      )?.innerHTML;
-    });
-
-    if(!footer || String(footer).includes(`</a> ${pageNumber} </td>`))
-    {
-      console.log("no more!");
-      hasMore = false;
+    try{
+      const page = await browser.newPage();
+      await page.goto(url, {
+        waitUntil: 'networkidle2',
+        timeout: 0
+      });
+      
+      await page.waitForSelector('table[class="dataTable"]');  
+  
+      const footer = await page.evaluate(() => {
+        debugger;
+        return document.querySelector(
+          'tr[class="webgrid-footer"]'
+        )?.innerHTML;
+      });
+  
+      if(!footer || String(footer).includes(`</a> ${pageNumber} </td>`))
+      {
+        console.log("no more!");
+        hasMore = false;
+      }
+      else{
+        console.log("has more!"); 
+        hasMore = true;
+      } 
+  
+  
+      let agentsFullName = await page.evaluate(() => {
+        let res = [];
+        let elements = document.getElementsByClassName("Priority-1");
+        // console.log(elements.length);
+        for (let i = 0; i < elements.length; i++) {
+          if (i == 0) {
+            continue;
+          } else {
+            //each agent
+            elements[i].firstElementChild.click();
+            let name = elements[i].firstElementChild.innerHTML;
+            res.push(name);
+          }
+        }
+        return res;
+      });
+  
+      await page.waitForTimeout(2 * 1000);
+  
+      let agentsDetailInfo = await page.evaluate(() => {
+        //read all data from profilewrapper
+        let agentsInfoRes = [];
+        let tables = document.getElementsByClassName("profilerow");
+        for (let index = 0; index < tables.length; index++) {
+          const table = tables[index];
+          let tableInfos = table.querySelectorAll(".profilevalue");
+          let tableLables = table.querySelectorAll(".profilelabel");
+          let agentInfo = {};
+          for (let c = 0; c < tableLables.length; c++) {
+            let labelName = tableLables[c].innerHTML.replace(/[^a-zA-Z]+/g, "");
+            let infoValue = tableInfos[c].innerHTML;
+            agentInfo[`${labelName}`] = infoValue;
+          }
+          agentsInfoRes.push(agentInfo);
+        }
+        console.log(agentsInfoRes);
+        return agentsInfoRes;
+      });
+  
+      for (let index = 0; index < agentsDetailInfo.length; index++) {
+        agentsDetailInfo[index]['Name'] = agentsFullName[index];
+        realtors.push(agentsDetailInfo[index]);
+      }  
     }
-    else{
-      console.log("has more!"); 
-      hasMore = true;
-    } 
-
-
-    let agentsFullName = await page.evaluate(() => {
-      let res = [];
-      let elements = document.getElementsByClassName("Priority-1");
-      // console.log(elements.length);
-      for (let i = 0; i < elements.length; i++) {
-        if (i == 0) {
-          continue;
-        } else {
-          //each agent
-          elements[i].firstElementChild.click();
-          let name = elements[i].firstElementChild.innerHTML;
-          res.push(name);
-        }
-      }
-      return res;
-    });
-
-    await page.waitForTimeout(2 * 1000);
-
-    let agentsDetailInfo = await page.evaluate(() => {
-      //read all data from profilewrapper
-      let agentsInfoRes = [];
-      let tables = document.getElementsByClassName("profilerow");
-      for (let index = 0; index < tables.length; index++) {
-        const table = tables[index];
-        let tableInfos = table.querySelectorAll(".profilevalue");
-        let tableLables = table.querySelectorAll(".profilelabel");
-        let agentInfo = {};
-        for (let c = 0; c < tableLables.length; c++) {
-          let labelName = tableLables[c].innerHTML.replace(/[^a-zA-Z]+/g, "");
-          let infoValue = tableInfos[c].innerHTML;
-          agentInfo[`${labelName}`] = infoValue;
-        }
-        agentsInfoRes.push(agentInfo);
-      }
-      console.log(agentsInfoRes);
-      return agentsInfoRes;
-    });
-
-    for (let index = 0; index < agentsDetailInfo.length; index++) {
-      agentsDetailInfo[index]['Name'] = agentsFullName[index];
-      realtors.push(agentsDetailInfo[index]);
-    }  
-     
-    await browser.close();
+    catch(ex){
+      console.log(ex);
+    }
+    finally{
+      await browser.close();
+    }    
+    
   }
 
   return realtors;
