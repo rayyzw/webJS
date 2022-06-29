@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         await client.connect();
         let hasData = await client.exists(`Assessment${pid}`);
         let assessment = {};
-        if(1==2 && hasData){
+        if(hasData){
           assessment = await client.get(`Assessment${pid}`);
         }
         else{
@@ -50,10 +50,13 @@ export default async function handler(req, res) {
 
 const getAssessment = async (pid) => {
   const url = `https://www.bcassessment.ca/`;
-  const browser = await puppeteer.launch(process.platform==='linux'?{executablePath: '/usr/bin/chromium-browser', headless: false}:{ headless: false });
+  const browser = await puppeteer.launch(process.platform==='linux'?{executablePath: '/usr/bin/chromium-browser'}:undefined);
   try{
     const page = await browser.newPage();
-    await page.goto(url);
+    await page.goto(url, {
+      waitUntil: 'networkidle2',
+      timeout: 0
+    });
 
     //select pid method first
     await page.select("#ddlSearchType", "PID");
@@ -72,7 +75,7 @@ const getAssessment = async (pid) => {
     console.log(totalValueString);
     let totalVauleNumber = parseInt(totalValueString.replace(/\D/g, ""));
     console.log(totalVauleNumber);
-    return totalValueString;
+    return totalVauleNumber;
 
   }
   catch(ex){
