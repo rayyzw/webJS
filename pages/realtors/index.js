@@ -318,13 +318,88 @@ export default function Realtors(props) {
   React.useEffect(() => {
     setLoading(false);
     if(loading){
-      getTier(data);
-      setRealtors({...data});
+      
+      const tiers = {
+        1: 0.035,
+        2: 0.04,
+        3: 0.025,
+        4: 0.015,
+        5: 0.01,
+        6: 0.025,
+        7: 0.05
+      }
+      
+      const getTier = (data) => {
+        if(data.children){
+          if(data.children.length<5)
+          {
+            data.name = data.value + '(tier 1)';
+            data.tier = 1;
+          }
+          else if(data.children.length<10)
+          {
+            data.name = data.value + '(tier 2)';
+            data.tier = 2;
+          }
+          else if(data.children.length<15)
+          {
+            data.name = data.value + '(tier 3)';
+            data.tier = 3;
+          }
+          else if(data.children.length<20)
+          {
+            data.name = data.value + '(tier 4)';
+            data.tier = 4;
+          }
+          else if(data.children.length<25)
+          {
+            data.name = data.value + '(tier 5)';
+            data.tier = 5;
+          }
+          else if(data.children.length<40)
+          {
+            data.name = data.value + '(tier 6)';
+            data.tier = 6;
+          }
+          else
+          {
+            data.name = data.value + '(tier 7)';
+            data.tier = 7;
+          }
+      
+          for(let i=0;i<data.children.length;i++){
+            getTier(data.children[i]);
+          }
+        }
+        else{
+          data.name = data.value + '(tier 1)';
+          data.tier = 1;
+        }
+      }
+
+      const getCommission = (data, index, tier) => {
+        let commission = 0;
+        if(data.children && index<tier-1){
+          for(let i=0;i<data.children.length;i++){
+            let child = data.children[i];
+            if(child.value>0){
+              commission = commission + child.value * tiers[(index+1)];
+              console.log(child.value);
+              console.log(tiers[(index+1)]);
+            }
+            commission = commission + getCommission(child,index+1,tier);
+          }
+        }
+        return commission;
+      }
+      
+      getTier(realtors);
+      setRealtors({...realtors});
       console.log("......Calculating Commission......");
-      let c = getCommission(data,0,data.tier);
+      let c = getCommission(realtors,0,realtors.tier);
       setCommission(c);
     }
-  }, [loading]);
+  }, [loading, realtors]);
 
 
   const getTier = (data) => {
