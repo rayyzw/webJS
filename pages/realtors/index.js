@@ -102,12 +102,12 @@ export default function Realtors(props) {
 
   const [tiers, setTiers] = React.useState({
     1: {fixed:0, bonus:0.035},
-    2: {fixed:0.002, bonus:0.038},
-    3: {fixed:0.001, bonus:0.024},
-    4: {fixed:0.001, bonus:0.014},
-    5: {fixed:0.001, bonus:0.009},
-    6: {fixed:0.005, bonus:0.02},
-    7: {fixed:0.005, bonus:0.045}
+    2: {fixed:0, bonus:0.038},
+    3: {fixed:0, bonus:0.024},
+    4: {fixed:0, bonus:0.014},
+    5: {fixed:0, bonus:0.009},
+    6: {fixed:0, bonus:0.02},
+    7: {fixed:0, bonus:0.045}
   });
   
 
@@ -121,10 +121,12 @@ export default function Realtors(props) {
           for(let i=0;i<data.children.length;i++){
             let child = data.children[i];
             if(child && child.value>0){
-              commission = commission + child.value * tiers[(index+1)].fixed;
               console.log("----------------------------------");
               console.log(child.name);
-              console.log("Fixed: " + child.value + " * " + tiers[(index+1)].fixed);
+              if(tiers[(index+1)].fixed>0){
+                commission = commission + child.value * tiers[(index+1)].fixed;
+                console.log("Fixed: " + child.value + " * " + tiers[(index+1)].fixed);
+              }
               if(index<tier){
                 commission = commission + child.value * tiers[(index+1)].bonus;
                 console.log("Tier: " + child.value + " * " + tiers[(index+1)].bonus);
@@ -303,11 +305,13 @@ export default function Realtors(props) {
           for(let i=0;i<data.children.length;i++){
             let child = data.children[i];
             if(child && child.value>0){
-              commission = commission + child.value * tiers[(index+1)].fixed;
               printContent = printContent + child.name;
               printContent = printContent + "\n";
-              printContent = printContent + "Fixed: " + child.value + " * " + tiers[(index+1)].fixed;
-              printContent = printContent + "\n";
+              if(tiers[(index+1)].fixed>0){
+                commission = commission + child.value * tiers[(index+1)].fixed;
+                printContent = printContent + "Fixed: " + child.value + " * " + tiers[(index+1)].fixed;
+                printContent = printContent + "\n";
+              }
               if(index<tier){
                 commission = commission + child.value * tiers[(index+1)].bonus;
                 printContent = printContent + "Tier: " + child.value + " * " + tiers[(index+1)].bonus;
@@ -348,7 +352,13 @@ export default function Realtors(props) {
           }}/>
         }
         {!loading &&
-          <>{createTree(realtors)}</>        
+          <div style={{display:"flex"}}>
+            <div style={{width:1000}}>{createTree(realtors)}</div>
+            <div><textarea style={{width:500,height:500}} value={JSON.stringify(tiers)} onChange={(e)=>{
+              setLoading(true);
+              setTiers(JSON.parse(e.target.value));
+            }}/></div>
+          </div>        
         }
         {selected &&
           <Modal onClick={()=>{setSelected(null);}}>
